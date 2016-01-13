@@ -1,0 +1,14 @@
+canvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 600px;
+}
+
+.form-container {
+  padding: 0;
+  margin: auto;
+  display: block;
+  width: 600px;
+  border: 2px solid #000000;
+}

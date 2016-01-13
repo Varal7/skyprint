@@ -157,7 +157,8 @@ a {
 }
 
 /* theme */
-.btn,.form-control,.alert,.progress,.panel,.list-group,.well,.list-group-item:first-child {border-radius:1px;box-shadow:0 0 0;}
+
+.btn,.form-control,.alert,.progress,.panel,.list-group,.well,.list-group-item:first-child {border-radius:5px;box-shadow:0 0 0;}
 .btn {border-color:transparent;}
 .btn-default,.well {
   background-color:#cccccc;

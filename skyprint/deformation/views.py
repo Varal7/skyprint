@@ -9,3 +9,6 @@ def input(request):
 
 def all(request):
     return  render(request, 'deformation/all.html', {})
+
+def test(request):
+    return  render(request, 'deformation/grid.html', {})

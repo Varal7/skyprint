@@ -1,0 +1,47 @@
+{% extends 'deformation/base.html' %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-sm-12">
+
+
+    <div class="well">
+      <h4>Sélectionner les positions voulues</h4>
+      <div class="container" style="width:630px;">
+
+      <button class="btn btn-default" id="raz">RAZ</button>
+
+      <strong>Position</strong> courante : <span id="cur"></span>
+
+      <canvas class="centered" id="pointGrid" width="600" height="350" style="border:1px solid #000000; overflow-x:scroll;"></canvas>
+
+       <form class="form">
+        <div class="input-group text-center">
+          <div class="input-group-btn">
+            <button class="btn btn-lg btn-warning" type="button" id="back">
+              <span class="glyphicon glyphicon-step-backward"></span>
+            </button>
+          </div>
+          <input type="text" class="form-control input-lg" id="coords" value="[]" />
+          <span class="input-group-btn">
+            <button class="btn btn-lg btn-success" type="button" id="ok">
+              <span class="glyphicon glyphicon-ok"></span>
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+
+    </div><!--/well-->
+
+
+
+
+  </div>
+
+</div>
+
+
+{% endblock %}
