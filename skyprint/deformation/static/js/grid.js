@@ -1,15 +1,29 @@
 + function($) {
     'use strict';
-  function getMousePos(canvas, evt) {
+
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+  var radius = 10;
+  var selected = null;
+  var dragging = false;
+
+  function getMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
-    return {
-      x: Math.floor(evt.clientX - rect.left)+1,
-      y: Math.floor(evt.clientY - rect.top)
-    };
+    return ([Math.floor(evt.clientX - rect.left)+1,
+     Math.floor(evt.clientY - rect.top)]);
   }
 
-  function drawCircle(canvas, center_x, center_y, radius) {
-  var context = canvas.getContext('2d');
+  function getArray() {
+    return $.parseJSON($("#coords").val());
+  }
+
+  function setArray(arr) {
+    $("#coords").val(JSON.stringify(arr));
+  }
+
+  function drawDisk(p) {
+  var center_x = p[0];
+  var center_y = p[1];
   context.beginPath();
   context.arc(center_x, center_y, radius, 0, 2 * Math.PI, false);
   context.fillStyle = 'green';
@@ -19,62 +33,133 @@
   context.stroke();
   }
 
-  function drawArray(arr) {
+  function drawSelected(p) {
+  var center_x = p[0];
+  var center_y = p[1];
+  context.beginPath();
+  context.arc(center_x, center_y, radius, 0, 2 * Math.PI, false);
+  context.fillStyle = 'green';
+  context.fill();
+  context.lineWidth = 2;
+  context.strokeStyle = '#CCAB1B';
+  context.stroke();
+  }
+
+  function drawArray() {
+    var arr = getArray();
     for (var i = 0; i < arr.length; i ++) {
-      drawCircle(canvas, arr[i][0], arr[i][1], 10);
+      drawDisk(arr[i]);
     }
   }
 
-  function clear(canvas) {
-    var context = canvas.getContext('2d');
+  function clear() {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function addCoord(mousePos) {
-   //  $("#coords").value(mousePos.x +  ", " mousePos.y);
-   var arr = $.parseJSON($("#coords").val());
-   arr.unshift([mousePos.x,mousePos.y]);
-   $("#coords").val(JSON.stringify(arr));
+  function update() {
+    clear();
+    drawArray();
   }
 
-  function readCoord(str) {
-    var arr = $.parseJSON($("#coords").val());
-    console.log(arr);
+  function addCoord(mousePos) {
+   var arr = getArray();
+   arr.unshift(mousePos);
+   setArray(arr);
+  }
+
+  function dist2(p1,p2) {
+    return Math.pow(p1[0]-p2[0],2) + Math.pow(p1[1]-p2[1],2);
+  }
+
+  function closestPoint(mousePos) {
+    var arr = getArray();
+    var i_min_dist = 0;
+    var min_dist = dist2(mousePos,arr[0])
+    for (var i = 0; i < arr.length; i ++) {
+      var d =dist2(mousePos,arr[i])
+      if (min_dist > d) {
+        i_min_dist = i;
+        min_dist = d;
+      }
+    }
+    return i_min_dist;
   }
 
   function removeFirstPoint() {
-    var arr = $.parseJSON($("#coords").val());
+    var arr = getArray();
     arr.shift();
-    $("#coords").val(JSON.stringify(arr));
-    clear(canvas);
-    drawArray(arr);
+    setArray(arr);
+    update();
  }
 
-  var canvas = document.getElementById('pointGrid');
-  var context = canvas.getContext('2d');
+  $("#canvas")
+    .click(function(evt) {
+      var mousePos = getMousePos(evt);
+      if (evt.shiftKey) {
+        if (selected != null) {
+           var arr = getArray();
+           arr.splice(selected,1);
+           setArray(arr);
+           update();
+        }
+      }
+      else {
+        addCoord(mousePos);
+        update();
+      }
+    })
+    .mousemove(function(evt) {
+      var mousePos = getMousePos(evt);
+      $("#cur").html(mousePos[0] + ',' + mousePos[1]);
+      update();
+      var arr = getArray()
+      if (arr.length != 0) {
+        var i = closestPoint(mousePos)
+        var closest = arr[i];
+        if (dist2(closest, mousePos) < radius * radius) {
+          selected = i;
+          drawSelected(closest);
+        }
+        else {
+          selected = null;
+        }
+      }
+    });
 
-  canvas.addEventListener('click', function(evt) {
-    var mousePos = getMousePos(canvas, evt);
-    drawCircle(canvas, mousePos.x, mousePos.y, 10);
-    addCoord(mousePos);
 
-  }, false);
 
-  canvas.addEventListener('mousemove', function(evt) {
-    var mousePos = getMousePos(canvas, evt);
-    $("#cur").html(mousePos.x + ',' + mousePos.y);
-  }, false);
 
-  document.getElementById('raz').addEventListener('click', function(evt) {
-    clear(canvas);
-  }, false);
+  $("#raz").click(function(evt) {
+    $("#coords").val("[]");
+    clear();
+  });
 
-  document.getElementById('ok').addEventListener('click', function(evt) {
-    readCoord($("#coords").val());
-  }, false);
+  $("#ok").click(function(evt) {
+    console.log("Ok");
+  });
 
-  document.getElementById('back').addEventListener('click', function(evt) {
+  $("#back").click(function() {
     removeFirstPoint();
-  }, false);
+  });
+
+  $("#coords").keypress(function(evt) {
+    console.log(evt.keyCode);
+  });
+
+  $("#coords").keyup(function() {
+    try{
+      update();
+      $("#back").prop('disabled',false);
+      $("#ok").prop('disabled',false);
+      $("#pointGrid").prop('disabled',false);
+      $("#err").html('');
+    }
+    catch(err) {
+      $("#back").prop('disabled',true);
+      $("#ok").prop('disabled',true);
+      $("#pointGrid").prop('disabled',true);
+      $("#err").html('Syntaxe incorrecte');
+    }
+  });
 
   }(jQuery);
