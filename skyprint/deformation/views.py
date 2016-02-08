@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import json
 from .forms import coordsForm
+from django.shortcuts import redirect
+
+from .scripts.processSimple import *
+
 
 
 
@@ -14,10 +17,9 @@ def input(request):
     if request.method == 'POST':
         form = coordsForm(request.POST)
         if form.is_valid():
-            coord = form.cleaned_data['coordsList']
-            data = json.loads(coord);
-            print (data[0])
-            return HttpResponse(coord)
+            coordsList = form.cleaned_data['coordsList']
+            res = resFromCoords(coordsList)
+            return render(request, 'deformation/result.html', {'coordsList' : coordsList, 'res' : res})
         else:
             return HttpResponse('not valid')
     else:

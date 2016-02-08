@@ -1,0 +1,24 @@
+{% extends 'deformation/base.html' %}
+
+{% block content %}
+
+<h1 id="section1">Results</h1>
+
+<h1 >Points</h1>
+<ul>
+{% for point in coordsList %}
+    <li>{{ point }} </li>
+{% endfor %}
+</ul>
+
+<h1 >Parameters</h1>
+<textarea class="form-control" rows="10">
+[
+{% for el in res %}{{ el }},
+{% endfor %}]
+</textarea>
+
+<hr>
+
+
+{% endblock %}

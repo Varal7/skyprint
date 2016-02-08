@@ -134,9 +134,6 @@
     clear();
   });
 
-  $("#ok").click(function(evt) {
-    console.log("Ok");
-  });
 
   $("#back").click(function() {
     removeFirstPoint();
