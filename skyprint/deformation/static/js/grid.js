@@ -7,10 +7,28 @@
   var selected = null;
   var dragging = false;
 
+  function toCenter(coord) {
+      var coord_c = new Object();
+      coord_c.x = coord.x - 300;
+      coord_c.y = 175 - coord.y;
+      return coord_c;
+  }
+
+  function fromCenter(coord_c) {
+      var coord = new Object();
+      coord.x = coord_c.x + 300;
+      coord.y = 175 - coord_c.y;
+      return coord;
+  }
+
   function getMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
-    return ([Math.floor(evt.clientX - rect.left)+1,
-     Math.floor(evt.clientY - rect.top)]);
+    var coord = new Object();
+    coord.x = Math.floor(evt.clientX - rect.left)+1;
+    coord.y = Math.floor(evt.clientY - rect.top);
+    var coord_c = new Object();
+    coord_c = toCenter(coord);
+    return ([coord_c.x , coord_c.y ]);
   }
 
   function getArray() {
@@ -22,10 +40,12 @@
   }
 
   function drawDisk(p) {
-  var center_x = p[0];
-  var center_y = p[1];
+  var coord_c = new Object();
+  coord_c.x = p[0];
+  coord_c.y = p[1];
+  var coord = fromCenter(coord_c);
   context.beginPath();
-  context.arc(center_x, center_y, radius, 0, 2 * Math.PI, false);
+  context.arc(coord.x, coord.y, radius, 0, 2 * Math.PI, false);
   context.fillStyle = 'green';
   context.fill();
   context.lineWidth = 1;
@@ -34,10 +54,12 @@
   }
 
   function drawSelected(p) {
-  var center_x = p[0];
-  var center_y = p[1];
+  var coord_c = new Object();
+  coord_c.x = p[0];
+  coord_c.y = p[1];
+  var coord = fromCenter(coord_c);
   context.beginPath();
-  context.arc(center_x, center_y, radius, 0, 2 * Math.PI, false);
+  context.arc(coord.x, coord.y, radius, 0, 2 * Math.PI, false);
   context.fillStyle = 'green';
   context.fill();
   context.lineWidth = 2;
