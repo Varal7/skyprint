@@ -127,8 +127,6 @@
     });
 
 
-
-
   $("#raz").click(function(evt) {
     $("#coords").val("[]");
     clear();
