@@ -9,14 +9,14 @@
 
   function toCenter(coord) {
       var coord_c = new Object();
-      coord_c.x = coord.x - 300;
+      coord_c.x = coord.x - 400;
       coord_c.y = 175 - coord.y;
       return coord_c;
   }
 
   function fromCenter(coord_c) {
       var coord = new Object();
-      coord.x = coord_c.x + 300;
+      coord.x = coord_c.x + 400;
       coord.y = 175 - coord_c.y;
       return coord;
   }

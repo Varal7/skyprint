@@ -8,7 +8,7 @@
       <div class="container" style="width:630px;">
         <button class="btn btn-default" id="raz">Clear</button>
         <strong>Current position</strong>  : <span id="cur"></span>
-        <canvas class="centered" id="canvas" width="600" height="350" style="border:1px solid #000000; overflow-x:scroll;"></canvas>
+        <canvas class="centered" id="canvas" width="600" height="400" style="border:1px solid #000000; overflow-x:scroll;"></canvas>
         <form class="form" method="post" action="">
           {% csrf_token %}
           {{form.blah_coords}}
