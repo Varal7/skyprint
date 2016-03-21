@@ -43,10 +43,10 @@ def resFromCoords(DONNEES):
 
     POS=[] # positions dans l'espace
 
-    theta=math.atan(M[2]/(M[0]+e/2)) # angle du plan par rapport à la verticale
+    beta=math.atan(M[2]/(M[0]+e/2)) # angle du plan par rapport à la verticale
 
     for k in range(N):
-        POS.append([M[0]-DONNEES[k][1]*math.sin(theta),M[1]-DONNEES[k][0],M[2]+DONNEES[k][1]*math.cos(theta)])
+        POS.append([M[0]-DONNEES[k][1]*math.sin(beta),M[1]-DONNEES[k][0],M[2]+DONNEES[k][1]*math.cos(beta)])
 
     PENTE=[0 for _ in range(N)]  # valeurs des pentes des trajectoires à l'explosion -- est déterminé par les fonctions suivantes
 
